@@ -5,16 +5,18 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static info.paragura.MyCircuitBreakerAspect.MY_CIRCUIT_BREAKER_NAME_PREFIX;
+
 @RestController
 public class MyController {
 
     @Autowired
-    @Qualifier("MyCircuitBreaker-aClient")
+    @Qualifier(MY_CIRCUIT_BREAKER_NAME_PREFIX + "aClient1")
     MyClient client1;
 
 
     @Autowired
-    @Qualifier("MyCircuitBreaker-aClient2")
+    @Qualifier(MY_CIRCUIT_BREAKER_NAME_PREFIX + "aClient2")
     MyClient client2;
 
 

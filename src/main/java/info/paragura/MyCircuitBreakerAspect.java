@@ -15,15 +15,17 @@ import java.util.Map;
 @Aspect
 public class MyCircuitBreakerAspect {
 
+    public static final String MY_CIRCUIT_BREAKER_NAME_PREFIX = "MyCircuitBreaker-";
+
     @Autowired
     CircuitBreakerRegistry registry;
 
     @Autowired
     private ApplicationContext appContext;
 
-    @Around("bean(MyCircuitBreaker*)")
+    @Around("bean(" + MY_CIRCUIT_BREAKER_NAME_PREFIX + "*)")
     public Object circuitBreakAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        String beanName = getBeanName(joinPoint);
+        String beanName = getBeanName(joinPoint).replace(MY_CIRCUIT_BREAKER_NAME_PREFIX, "");
         CircuitBreaker breaker = registry.circuitBreaker(beanName);
         return CircuitBreaker.decorateCheckedSupplier(breaker, joinPoint::proceed).apply();
     }
@@ -31,8 +33,8 @@ public class MyCircuitBreakerAspect {
     private String getBeanName(ProceedingJoinPoint joinPoint) {
         Object targetObject = joinPoint.getTarget();
         Object proxiedObject = joinPoint.getThis();
-        Map<String, ? extends Object> beans = appContext.getBeansOfType(targetObject.getClass());
-        for (Map.Entry<String, ? extends Object> entry : beans.entrySet()) {
+        Map<String, ?> beans = appContext.getBeansOfType(targetObject.getClass());
+        for (Map.Entry<String, ?> entry : beans.entrySet()) {
             if (entry.getValue() == proxiedObject) {
                 return entry.getKey();
             }
