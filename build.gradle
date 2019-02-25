@@ -1,0 +1,39 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.4.RELEASE")
+    }
+}
+
+apply plugin: "java"
+apply plugin: "spring-boot"
+apply plugin: "eclipse"
+
+eclipse {
+    classpath {
+        containers "org.springsource.ide.eclipse.gradle.classpathcontainer"
+    }
+}
+
+jar {
+    baseName = "spring-boot-resilience4j-test"
+    version =  "0.0.1-SNAPSHOT"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web:1.4.0.RELEASE")
+    //compile("org.springframework.cloud:spring-cloud-starter-hystrix:1.1.5.RELEASE")
+    //compile("com.netflix.hystrix:hystrix-core:1.5.3") hystrix is in maintenance mode... bye.
+    compile "io.github.resilience4j:resilience4j-circuitbreaker:0.13.2"
+    compile "io.github.resilience4j:resilience4j-spring-boot:0.13.2"
+    compile "io.github.resilience4j:resilience4j-metrics:0.13.2"
+    compile "com.codahale.metrics:metrics-core:3.0.2"
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+
+}

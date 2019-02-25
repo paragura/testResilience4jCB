@@ -1,0 +1,18 @@
+logging.level.org.springframework: INFO
+
+
+
+resilience4j.circuitbreaker:
+  backends:
+    aClient:
+      ringBufferSizeInClosedState: 5
+      ringBufferSizeInHalfOpenState: 3
+      waitInterval: 5000
+      failureRateThreshold: 20
+      eventConsumerBufferSize: 10
+    aClient2:
+      ringBufferSizeInClosedState: 10
+      ringBufferSizeInHalfOpenState: 6
+      waitInterval: 5000
+      failureRateThreshold: 50
+      eventConsumerBufferSize: 10
